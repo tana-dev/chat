@@ -7,11 +7,12 @@
 		</style>
 	</head>
 	<body>
-		<ul id="message"></ul>
+		<ul id="messages"></ul>
+		アプリケーション
 		<div>websocket</div>
 		<form id="chatbox">
 			<textarea></textarea>
-			<input type="submit" value="send"/>
+			<input type="submit" value="send" />
 		</form>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script>
@@ -19,27 +20,27 @@
 				var socket = null;
 				var msgBox = $("#chatbox textarea");
 				var message = $("#messages");
-			$("#chatbox").submit(function(){
-				if (!msgBox.val()) return false;
-				if (!socket) {
-					alert("error: failed to connect WebSocket");
+				$("#chatbox").submit(function(){
+					if (!msgBox.val()) return false;
+					if (!socket) {
+						alert("error: failed to connect WebSocket");
+						return false;
+					}
+					socket.send(msgBox.val());
+					msgBox.val("");
 					return false;
+				});
+				if (!window["WebSocket"]){
+					alert("error: browser WebSocket");
+				} else {
+					socket = new WebSocket("ws://localhost:8080/room");
+					socket.onclose = function() {
+						alert("接続が終了しました");
+					}
+					socket.onmessage = function(e) {
+						messages.append(e.data);
+					}
 				}
-				socket.send(msgBox.val());
-				msgBox.val("");
-				return false;
-			});
-			if (!window{"WebSocket"}{
-				alert("error: browser WebSocket");
-			} else {
-				socket = new WebSocket("ws://localhost:8080/room");
-				socket.onclose = function() {
-					alert("接続が終了しました");
-				}
-				socket.onmessage = function(e) {
-					messages.append($("<li>").text(e.data));
-				}
-			}
 			});
 		</script>
 	</body>
