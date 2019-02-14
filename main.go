@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -19,8 +18,10 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
-	ttt := t.templ.Execute(w, nil)
-	fmt.Println(ttt)
+	t.templ.Execute(w, nil)
+	//	チェックが必要
+	//	ttt := t.templ.Execute(w, nil)
+	//	fmt.Println(ttt)
 }
 
 func main() {
@@ -42,7 +43,7 @@ func main() {
 
 	//	http.Handle("/", &templateHandler{filename: "main.html"})
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8081", nil); err != nil {
 		log.Fatal("ListenAndServe", err)
 	}
 

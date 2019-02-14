@@ -7,13 +7,12 @@
 		</style>
 	</head>
 	<body>
-		<ul id="messages"></ul>
-		アプリケーション
-		<div>websocket</div>
+		<div>チャット</div>
 		<form id="chatbox">
 			<textarea></textarea>
 			<input type="submit" value="send" />
 		</form>
+		<ul id="messages"></ul>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<script>
 			$(function() {
@@ -33,12 +32,12 @@
 				if (!window["WebSocket"]){
 					alert("error: browser WebSocket");
 				} else {
-					socket = new WebSocket("ws://localhost:8080/room");
+					socket = new WebSocket("ws://localhost:8081/room");
 					socket.onclose = function() {
 						alert("接続が終了しました");
 					}
 					socket.onmessage = function(e) {
-						messages.append(e.data);
+						$("#messages").append("<ul>" + e.data + "</ul>");
 					}
 				}
 			});
